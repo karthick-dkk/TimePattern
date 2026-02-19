@@ -1,0 +1,29 @@
+{
+	"manifest_version": 2,
+	"id": "incident-investigation",
+	"name": "Incident Investigation",
+	"version": "1.0",
+	"namespace": "IncidentInvestigation",
+	"author": "Monzphere",
+	"url": "https://monzphere.com",
+	"description": "Detailed incident investigation with Time Patterns and comprehensive insights",
+	"actions": {
+		"incident.investigation.view": {
+			"class": "CControllerIncidentInvestigationView",
+			"view": "incident.investigation.view",
+			"layout": "layout.htmlpage"
+		},
+		"incident.serviceimpact": {
+			"class": "CControllerIncidentServiceImpact"
+		}
+	},
+	"assets": {
+		"css": [
+			"blue-theme.css",
+			"dark-theme.css"
+		],
+		"js": [
+			"problem-investigation-icon.js"
+		]
+	}
+}

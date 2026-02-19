@@ -1,0 +1,200 @@
+[theme="dark-theme"] .mnz-incident-section-sla {
+	border-color: rgba(255,255,255,0.1);
+}
+
+[theme="dark-theme"] .mnz-sla-gauge {
+	border: 1px solid rgba(255,255,255,0.15);
+	box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+[theme="dark-theme"] .mnz-sla-tree-compact {
+	background: rgba(43,43,43,0.95);
+	border-color: rgba(255,255,255,0.1);
+}
+
+[theme="dark-theme"] .mnz-sla-tree-title {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-sla-tree-name {
+	color: #e0e0e0;
+}
+
+[theme="dark-theme"] .mnz-sla-table th,
+[theme="dark-theme"] .mnz-sla-table td {
+	border-color: rgba(255, 255, 255, 0.1);
+}
+
+[theme="dark-theme"] .mnz-sla-table th {
+	background: rgba(255, 255, 255, 0.05);
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-sla-loading,
+[theme="dark-theme"] .mnz-sla-empty {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-sla-error {
+	color: #ef4444;
+}
+
+[theme="dark-theme"] .mnz-sla-summary {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-drilldown-bar-value {
+	color: #e0e0e0;
+}
+
+[theme="dark-theme"] .mnz-incident-section {
+	background: #2b2b2b;
+}
+
+[theme="dark-theme"] .mnz-insight-card {
+	background: #363636;
+	border-left-color: #5dade2;
+	color: #e0e0e0;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+[theme="dark-theme"] .mnz-insight-card-month {
+	border-left-color: #58d68d;
+}
+
+[theme="dark-theme"] .mnz-insight-card-hours {
+	border-left-color: #7d93e8;
+}
+
+[theme="dark-theme"] .mnz-insight-card-total {
+	border-left-color: #e8b86d;
+}
+
+[theme="dark-theme"] .mnz-insight-label {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-insight-value {
+	color: #e0e0e0;
+}
+
+[theme="dark-theme"] .mnz-section-toggle {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-incident-section-title {
+	color: #f9fafb;
+}
+
+[theme="dark-theme"] .mnz-incident-section-key-insight {
+	border-left-color: #5dade2;
+}
+
+[theme="dark-theme"] .mnz-key-chip-label {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-key-chip-value {
+	color: #e0e0e0;
+}
+
+[theme="dark-theme"] .mnz-key-chip-action {
+	border-left-color: rgba(255, 255, 255, 0.15);
+}
+
+[theme="dark-theme"] .mnz-key-chip-action-label {
+	color: #5dade2;
+}
+
+[theme="dark-theme"] .mnz-key-chip-action-text {
+	color: #d1d5db;
+}
+
+[theme="dark-theme"] .mnz-key-chip-groups {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-key-chip-trigger {
+	color: #e0e0e0;
+}
+
+[theme="dark-theme"] .mnz-details-line {
+	color: #d1d5db;
+}
+
+[theme="dark-theme"] .mnz-details-groups {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-details-label {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-details-trigger {
+	color: #e0e0e0;
+}
+
+[theme="dark-theme"] .mnz-incident-subsection-title,
+[theme="dark-theme"] .mnz-incident-chart-title {
+	color: #e0e0e0;
+}
+
+[theme="dark-theme"] .mnz-incident-investigation-title {
+	color: #f9fafb;
+}
+
+[theme="dark-theme"] .mnz-incident-investigation-meta {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-incident-chart-container {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+[theme="dark-theme"] .mnz-investigation-bar-label,
+[theme="dark-theme"] .mnz-investigation-monthly-label {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-investigation-drilldown {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+[theme="dark-theme"] .mnz-drilldown-hint,
+[theme="dark-theme"] .mnz-drilldown-subhint {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-drilldown-title {
+	color: #e0e0e0;
+}
+
+[theme="dark-theme"] .mnz-investigation-filter-bar.mnz-filter-active {
+	background: rgba(2, 117, 184, 0.2);
+}
+
+[theme="dark-theme"] .mnz-filter-label {
+	color: #5dade2;
+}
+
+[theme="dark-theme"] .mnz-filter-comparison {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-incident-investigation-help {
+	background: rgba(255, 255, 255, 0.05);
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-heatmap-row-label,
+[theme="dark-theme"] .mnz-heatmap-hour-label {
+	color: #9ca3af;
+}
+
+[theme="dark-theme"] .mnz-recommendation-item {
+	color: #d1d5db;
+}
+
+[theme="dark-theme"] .mnz-module-footer {
+	color: #9ca3af;
+}
