@@ -1,5 +1,8 @@
 # Zabbix Incident Investigation Module
 
+<img width="1280" height="755" alt="image" src="https://github.com/user-attachments/assets/eb8005f9-43de-45fa-8525-288d47dbec4c" />
+
+
 A Zabbix module providing detailed incident investigation with temporal patterns, occurrence heatmaps, SLA impact, and action timeline.
 
 **Developed by [Monzphere](https://monzphere.com)**
