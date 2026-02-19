@@ -29,7 +29,7 @@ A Zabbix module providing detailed incident investigation with temporal patterns
 - PHP 8.0+
 - Zabbix with Services and SLA configured (optional, for SLA impact panel)
 
-If the module does not work on your Zabbix version, please open an [issue](https://github.com/YOUR-USERNAME/timepattern-incident-investigation/issues) on GitHub.
+If the module does not work on your Zabbix version, please open an [issue]([https://github.com/YOUR-USERNAME/timepattern-incident-investigation/issues](https://github.com/Monzphere/TimePattern/issues)) on GitHub.
 
 ---
 
@@ -38,7 +38,7 @@ If the module does not work on your Zabbix version, please open an [issue](https
 ### 1. Download the module
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/timepattern-incident-investigation.git
+git clone https://github.com/Monzphere/TimePattern.git
 # or download the ZIP and extract
 ```
 
@@ -47,14 +47,14 @@ git clone https://github.com/YOUR-USERNAME/timepattern-incident-investigation.gi
 Copy the module folder to Zabbix's modules directory:
 
 ```bash
-cp -r timepattern-incident-investigation /usr/share/zabbix/modules/TimePattern
+cp -r TimePattern /usr/share/zabbix/modules/TimePattern
 ```
 
 If the `modules` directory does not exist, create it:
 
 ```bash
 mkdir -p /usr/share/zabbix/modules
-cp -r timepattern-incident-investigation /usr/share/zabbix/modules/TimePattern
+cp -r TimePattern /usr/share/zabbix/modules/TimePattern
 ```
 
 ### 3. Enable the module in Zabbix
