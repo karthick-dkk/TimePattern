@@ -1,7 +1,5 @@
 <?php declare(strict_types = 0);
 
-use CWebUser;
-
 function local_showHeader(array $data): void {
 	header('Content-Type: text/html; charset=UTF-8');
 	header('X-Content-Type-Options: nosniff');
