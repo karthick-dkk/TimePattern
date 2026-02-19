@@ -575,6 +575,9 @@ $chart_script = 'window.mnzInvestigationData = '.json_encode($chart_data).';'.
 		'var dayLabs = (d.dayLabels&&d.dayLabels.length) ? d.dayLabels : []; while(dayLabs.length<31) dayLabs.push(dayLabs.length+1);'.
 		'jQuery("#mnz-investigation-monthly-chart").off("click", ".mnz-bar-clickable").on("click", ".mnz-bar-clickable", function() {'.
 			'var idx = parseInt(jQuery(this).data("index"), 10); var mk = monthKeys[idx]; if (!mk) return;'.
+			'if (currentFilter && currentFilter.type==="month" && currentFilter.value===idx) {'.
+				'currentFilter=null; currentAgg=computeAggregates(clocks); var m=jQuery("#mnz-monthly-drilldown"); m.removeClass("mnz-drilldown-visible").empty().append(\'<div class="mnz-drilldown-hint mnz-drilldown-hint-monthly">\'+(d.hintMonth||"")+\'</div>\'); applyAndRender(); updateFilterBar(); return;'.
+			'}'.
 			'var filtered = clocks.filter(function(t){ var dt=new Date(t*1000); return dt.getFullYear()+"-"+(String(dt.getMonth()+1).padStart(2,"0"))===mk; });'.
 			'currentFilter = {type:"month", value:idx}; currentAgg = computeAggregates(filtered); jQuery("#mnz-weekly-drilldown").removeClass("mnz-drilldown-visible"); applyAndRender(); updateFilterBar();'.
 			'var dd = currentAgg.monthlyDailyDetails[idx]; if (dd) renderDrilldown("mnz-monthly-drilldown", dd, dayLabs, "'. _('Daily distribution') .' - "+d.monthLabels[idx], barFill, true); setupCloseHandler("mnz-monthly-drilldown", d.hintMonth||"", "mnz-drilldown-hint-monthly");'.
