@@ -51,7 +51,7 @@
 	}
 
 	function getInvestigationUrl(eventid, triggerid) {
-		const url = new URL('zabbix.php', window.location.origin);
+		const url = new URL('zabbix.php', window.location.href);
 		url.searchParams.set('action', INCIDENT_ACTION);
 		url.searchParams.set('eventid', String(eventid));
 		if (triggerid) {
