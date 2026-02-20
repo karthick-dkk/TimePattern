@@ -250,7 +250,10 @@ class CControllerIncidentServiceImpact extends CController {
 				'status' => $service['status'],
 				'sli' => $sli_data['sli'] ?? null,
 				'has_sla' => $sli_data['has_sla'] ?? false,
-				'slo' => $sli_data['slo'] ?? null
+				'slo' => $sli_data['slo'] ?? null,
+				'uptime' => $sli_data['uptime'] ?? null,
+				'downtime' => $sli_data['downtime'] ?? null,
+				'error_budget' => $sli_data['error_budget'] ?? null
 			]);
 
 			if (!empty($service['parents'])) {
@@ -296,6 +299,9 @@ class CControllerIncidentServiceImpact extends CController {
 					'sli' => $sli_data['sli'] ?? null,
 					'has_sla' => $sli_data['has_sla'] ?? false,
 					'slo' => $sli_data['slo'] ?? null,
+					'uptime' => $sli_data['uptime'] ?? null,
+					'downtime' => $sli_data['downtime'] ?? null,
+					'error_budget' => $sli_data['error_budget'] ?? null,
 					'children' => $this->getChildrenTree($child_service['serviceid'], $depth + 1, $visited)
 				];
 			}

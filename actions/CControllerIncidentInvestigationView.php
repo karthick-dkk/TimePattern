@@ -119,6 +119,16 @@ class CControllerIncidentInvestigationView extends CController {
 			$host = $hosts ? $hosts[0] : null;
 		}
 
+		$has_host_dashboard = false;
+		if ($actual_hostid > 0) {
+			$host_dashboards = API::HostDashboard()->get([
+				'output' => ['dashboardid'],
+				'hostids' => $actual_hostid,
+				'limit' => 1
+			]);
+			$has_host_dashboard = !empty($host_dashboards);
+		}
+
 		$related_events = [];
 		if ($actual_triggerid > 0) {
 			$related_events = API::Event()->get([
@@ -250,14 +260,121 @@ class CControllerIncidentInvestigationView extends CController {
 		$data['event'] = $event;
 		$data['trigger'] = $trigger;
 		$data['host'] = $host;
+		$data['has_host_dashboard'] = $has_host_dashboard;
 		$data['related_events'] = $related_events;
 		$data['six_months_events'] = $six_months_events;
 		$data['items'] = $items;
 		$data['monthly_comparison'] = $monthly_comparison;
+		$data['trigger_correlations'] = $this->computeTriggerCorrelations(
+			$actual_triggerid,
+			$actual_hostid,
+			$six_months_events
+		);
 
 		$response = new CControllerResponseData($data);
 		$response->setTitle(_('Incident Investigation'));
 		$this->setResponse($response);
+	}
+
+	/**
+	 * Find triggers that tend to fire before (precursor) or after (follower) this trigger on the same host.
+	 * Uses ±30min window. Returns top correlation per type with ≥25% and ≥2 occurrences.
+	 */
+	private function computeTriggerCorrelations(int $triggerid, int $hostid, array $six_months_events): array {
+		$result = ['precedes' => null, 'follows' => null];
+		if ($triggerid <= 0 || $hostid <= 0 || empty($six_months_events)) {
+			return $result;
+		}
+		$window = 1800; // 30 min
+		$our_clocks = array_filter(array_column($six_months_events, 'clock'));
+		if (empty($our_clocks)) {
+			return $result;
+		}
+		$total_ours = count($our_clocks);
+		$time_from = strtotime('-12 months');
+		$time_to = time();
+		$host_triggers = API::Trigger()->get([
+			'output' => ['triggerid', 'description'],
+			'hostids' => $hostid
+		]);
+		$other_triggerids = array_values(array_filter(array_column($host_triggers, 'triggerid'), function ($tid) use ($triggerid) {
+			return (int) $tid !== $triggerid;
+		}));
+		if (empty($other_triggerids)) {
+			return $result;
+		}
+		$all_events = API::Event()->get([
+			'output' => ['objectid', 'clock'],
+			'source' => EVENT_SOURCE_TRIGGERS,
+			'object' => EVENT_OBJECT_TRIGGER,
+			'objectids' => $other_triggerids,
+			'value' => 1,
+			'time_from' => max($time_from, min($our_clocks) - $window),
+			'time_till' => min($time_to, max($our_clocks) + $window),
+			'sortfield' => 'clock',
+			'sortorder' => 'ASC'
+		]);
+		$by_trigger = [];
+		foreach ($all_events as $ev) {
+			$tid = $ev['objectid'];
+			if (!isset($by_trigger[$tid])) {
+				$by_trigger[$tid] = [];
+			}
+			$by_trigger[$tid][] = (int) $ev['clock'];
+		}
+		$triggers_by_id = array_column($host_triggers, 'description', 'triggerid');
+		$precursor_scores = [];
+		$follower_scores = [];
+		foreach ($our_clocks as $our_clock) {
+			$our_clock = (int) $our_clock;
+			$prec_start = $our_clock - $window;
+			$prec_end = $our_clock;
+			$fol_start = $our_clock;
+			$fol_end = $our_clock + $window;
+			foreach ($by_trigger as $tid => $clocks) {
+				foreach ($clocks as $c) {
+					if ($c >= $prec_start && $c <= $prec_end) {
+						$precursor_scores[$tid] = ($precursor_scores[$tid] ?? 0) + 1;
+						break;
+					}
+				}
+				foreach ($clocks as $c) {
+					if ($c >= $fol_start && $c <= $fol_end) {
+						$follower_scores[$tid] = ($follower_scores[$tid] ?? 0) + 1;
+						break;
+					}
+				}
+			}
+		}
+		$min_pct = 25;
+		$min_count = 2;
+		foreach ($precursor_scores as $tid => $cnt) {
+			if ($cnt >= $min_count) {
+				$pct = round(100 * $cnt / $total_ours, 0);
+				if ($pct >= $min_pct && ($result['precedes'] === null || $pct > $result['precedes']['pct'])) {
+					$result['precedes'] = [
+						'triggerid' => $tid,
+						'name' => $triggers_by_id[$tid] ?? _('Unknown'),
+						'pct' => $pct,
+						'count' => $cnt
+					];
+				}
+			}
+		}
+		foreach ($follower_scores as $tid => $cnt) {
+			if ($cnt >= $min_count) {
+				$pct = round(100 * $cnt / $total_ours, 0);
+				if ($pct >= $min_pct && ($result['follows'] === null || $pct > $result['follows']['pct'])) {
+					$result['follows'] = [
+						'triggerid' => $tid,
+						'name' => $triggers_by_id[$tid] ?? _('Unknown'),
+						'pct' => $pct,
+						'count' => $cnt
+					];
+				}
+			}
+		}
+		return $result;
 	}
 
 	private function formatMonth(int $ts): string {
