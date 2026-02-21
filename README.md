@@ -1,7 +1,7 @@
 # Zabbix Incident Investigation Module
 
-<img width="1444" height="739" alt="image" src="https://github.com/user-attachments/assets/5cd0b517-c91b-41cc-9b1a-c07983f94055" />
-<img width="1439" height="746" alt="image" src="https://github.com/user-attachments/assets/97a28b25-c845-4966-88b4-289f0526a82e" />
+<img width="1455" height="746" alt="image" src="https://github.com/user-attachments/assets/67e25ae3-e580-4939-af3a-0fcc35f9fe45" />
+<img width="1451" height="752" alt="image" src="https://github.com/user-attachments/assets/87a2a4cd-f6f6-4b82-8545-ddf32c1812c7" />
 <img width="1439" height="748" alt="image" src="https://github.com/user-attachments/assets/fd0222e2-7236-4600-95e1-540f8a26e585" />
 
 
