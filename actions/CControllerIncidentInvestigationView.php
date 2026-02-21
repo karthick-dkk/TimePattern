@@ -123,8 +123,8 @@ class CControllerIncidentInvestigationView extends CController {
 		if ($actual_hostid > 0) {
 			$hosts_with_dashboards = API::Host()->get([
 				'output' => ['hostid'],
-				'hostids' => $actual_hostid,
-				'selectDashboards' => ['dashboardid', 'name'],
+				'hostids' => [$actual_hostid],
+				'selectDashboards' => ['hostid', 'dashboardid', 'name'],
 				'limit' => 1
 			]);
 			$has_host_dashboard = !empty($hosts_with_dashboards[0]['dashboards'] ?? []);
