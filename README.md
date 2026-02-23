@@ -6,7 +6,7 @@
 
 
 
-
+![views](https://komarev.com/ghpvc/?username=matheusandrade&repo=https://github.com/Monzphere/IncidentInvestigation)
 
 A Zabbix module providing detailed incident investigation with temporal patterns, occurrence heatmaps, SLA impact, and action timeline.
 
