@@ -525,6 +525,7 @@ $chart_data = [
 	'viewServiceTree' => _('View service tree with SLI'),
 	'failedToLoadServiceImpact' => _('Failed to load service impact'),
 	'serviceTreeAndSLI' => _('Service tree and SLI'),
+	'inheritedFrom' => _('inherited from'),
 	'uptime' => _('Uptime'),
 	'downtime' => _('Downtime'),
 	'errorBudget' => _('Error budget'),

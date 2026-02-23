@@ -172,7 +172,7 @@ class CControllerIncidentServiceImpact extends CController {
 				}
 
 				if (!empty($matching_tags)) {
-					$sli_data = $this->getSLIDataOptimized($service['serviceid']);
+					$sli_data = $this->getSLIDataWithParentFallback($service['serviceid']);
 					$impacted_services[] = [
 						'serviceid' => $service['serviceid'],
 						'name' => $service['name'],
@@ -188,7 +188,9 @@ class CControllerIncidentServiceImpact extends CController {
 						'error_budget' => $sli_data['error_budget'] ?? null,
 						'has_sla' => $sli_data['has_sla'] ?? false,
 						'sla_name' => $sli_data['sla_name'] ?? null,
-						'slo' => $sli_data['slo'] ?? null
+						'slo' => $sli_data['slo'] ?? null,
+						'inherited_from' => $sli_data !== null ? ($sli_data['inherited_from'] ?? null) : null,
+						'inherited_from_name' => $sli_data !== null ? ($sli_data['inherited_from_name'] ?? null) : null
 					];
 				}
 			}
@@ -215,7 +217,9 @@ class CControllerIncidentServiceImpact extends CController {
 					'slo' => $service['slo'] ?? null,
 					'uptime' => $service['uptime'],
 					'downtime' => $service['downtime'],
-					'error_budget' => $service['error_budget']
+					'error_budget' => $service['error_budget'],
+					'inherited_from' => $service['inherited_from'] ?? null,
+					'inherited_from_name' => $service['inherited_from_name'] ?? null
 				],
 				'path_to_root' => $path_to_root,
 				'children_tree' => $children_tree
@@ -307,6 +311,60 @@ class CControllerIncidentServiceImpact extends CController {
 			}
 		}
 		return $children;
+	}
+
+	/**
+	 * Get SLA/SLI data for a service. If the service has no SLA, walk up the parent
+	 * chain and use the first ancestor that has an SLA (common when SLA is at parent level).
+	 * Does not affect native Zabbix SLA logic; only used for display in this module.
+	 */
+	private function getSLIDataWithParentFallback(string $serviceid): ?array {
+		$sli_data = $this->getSLIDataOptimized($serviceid);
+		if ($sli_data !== null) {
+			return $sli_data;
+		}
+
+		$visited = [];
+		$current = $serviceid;
+		$max_depth = 10;
+
+		for ($i = 0; $i < $max_depth; $i++) {
+			if (in_array($current, $visited)) {
+				break;
+			}
+			$visited[] = $current;
+
+			$services = API::Service()->get([
+				'output' => ['serviceid'],
+				'serviceids' => [$current],
+				'selectParents' => ['serviceid', 'name']
+			]);
+
+			if (empty($services) || empty($services[0]['parents'])) {
+				break;
+			}
+
+			$parent = $services[0]['parents'][0];
+			$parent_sli = $this->getSLIDataOptimized($parent['serviceid']);
+
+			if ($parent_sli !== null) {
+				return [
+					'sli' => $parent_sli['sli'] ?? null,
+					'uptime' => $parent_sli['uptime'] ?? null,
+					'downtime' => $parent_sli['downtime'] ?? null,
+					'error_budget' => $parent_sli['error_budget'] ?? null,
+					'has_sla' => true,
+					'sla_name' => $parent_sli['sla_name'] ?? null,
+					'slo' => $parent_sli['slo'] ?? null,
+					'inherited_from' => $parent['serviceid'],
+					'inherited_from_name' => $parent['name'] ?? null
+				];
+			}
+
+			$current = $parent['serviceid'];
+		}
+
+		return null;
 	}
 
 	private function getSLIDataOptimized(string $serviceid): ?array {

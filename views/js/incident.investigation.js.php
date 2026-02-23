@@ -404,7 +404,12 @@ jQuery(document).ready(function() {
 			var s = data.service_trees[t].impacted_service;
 			if (s && s.has_sla && s.sli != null) {
 				var key = (s.serviceid != null ? String(s.serviceid) : s.name || ("t" + t));
-				if (!seen[key]) { seen[key] = 1; out.push({ name: s.name || "", sli: parseFloat(s.sli), slo: s.slo != null ? parseFloat(s.slo) : 99.9, treeIndex: t }); }
+				if (!seen[key]) {
+					seen[key] = 1;
+					var displayName = s.name || "";
+					if (s.inherited_from_name) displayName += " (" + (d.inheritedFrom || "inherited from") + " " + s.inherited_from_name + ")";
+					out.push({ name: displayName, sli: parseFloat(s.sli), slo: s.slo != null ? parseFloat(s.slo) : 99.9, treeIndex: t });
+				}
 			}
 		}
 		return out;
@@ -497,7 +502,8 @@ jQuery(document).ready(function() {
 			var downtime = (service.downtime != null && service.downtime !== "") ? String(service.downtime) : null;
 			var errBudget = (service.error_budget != null && service.error_budget !== "") ? String(service.error_budget) : null;
 			var name = String(service.name || "").replace(/</g, "&lt;");
-			html += '<tr><td class="mnz-sla-tree-cell-name"' + padStyle + ' title="' + name + '">' + prefix + name + '</td><td class="mnz-sla-tree-cell-sli">' + sliCell + '</td><td class="mnz-sla-tree-cell-extra">' + extraBadge(uptime, "uptime") + '</td><td class="mnz-sla-tree-cell-extra">' + extraBadge(downtime, "downtime") + '</td><td class="mnz-sla-tree-cell-extra">' + extraBadge(errBudget, "errbudget") + '</td></tr>';
+			var title = name; if (service.inherited_from_name) title += " (" + (d.inheritedFrom || "inherited from") + " " + String(service.inherited_from_name).replace(/</g, "&lt;") + ")";
+			html += '<tr><td class="mnz-sla-tree-cell-name"' + padStyle + ' title="' + title + '">' + prefix + name + '</td><td class="mnz-sla-tree-cell-sli">' + sliCell + '</td><td class="mnz-sla-tree-cell-extra">' + extraBadge(uptime, "uptime") + '</td><td class="mnz-sla-tree-cell-extra">' + extraBadge(downtime, "downtime") + '</td><td class="mnz-sla-tree-cell-extra">' + extraBadge(errBudget, "errbudget") + '</td></tr>';
 			if (service.children && service.children.length) for (var i = 0; i < service.children.length; i++) addRow(service.children[i], (level || 0) + 1);
 		}
 		var treeIndices = [];
